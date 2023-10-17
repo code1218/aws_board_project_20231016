@@ -22,7 +22,6 @@ public class AuthController {
     @ArgsAop
     @TimeAop
     @ValidAop
-    @CrossOrigin
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(
             @Valid @RequestBody SignupReqDto signupReqDto,
