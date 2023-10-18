@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board
+    username: root
+    password: 1q2w3e4r
+
+mybatis:
+  mapper-locations:
+    - /mappers/*.xml
+
+jwt:
+  secret: H46I0ZkcLgteETeshwRePFN9vTyTYP6X2MaiaJ9fKaNyAcwU4zbDehAct7PRRvaYVVxMeN0dmG97PCYL7KuDvw==
