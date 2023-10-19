@@ -32,7 +32,6 @@ public class JwtProvider {
 
     public String generateToken(Authentication authentication) {
         String email = authentication.getName();
-        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         Date date = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
 
@@ -40,7 +39,6 @@ public class JwtProvider {
                 .setSubject("AccessToken")
                 .setExpiration(date)
                 .claim("email", email)
-                .claim("isEnabled", principalUser.isEnabled())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
