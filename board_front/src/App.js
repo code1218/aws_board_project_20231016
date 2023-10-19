@@ -1,13 +1,12 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
-import Auth from "./components/Auth/Auth";
+import { Route, Routes } from "react-router-dom";
 import RootLayout from "./components/RootLayout/RootLayout";
 import Home from "./pages/Home/Home";
 import { useQuery } from "react-query";
 import { instance } from "./api/config/instance";
+import AuthRoute from "./components/Routes/AuthRoute";
+import AccountRoute from "./components/Routes/AccountRoute";
 
 function App() {
-  const navigate = useNavigate();
-
   const getPrincipal = useQuery(["getPrincipal"], async () => {
     try{
       const option = {
@@ -18,7 +17,7 @@ function App() {
       return await instance.get("/account/principal", option);
 
     }catch(error) {
-      throw new Error(error);
+      // throw new Error(error);
     }
   }, {
     retry: 0,
@@ -26,11 +25,16 @@ function App() {
     refetchOnWindowFocus: false
   });
 
+  if(getPrincipal.isLoading){
+    return <></>
+  }
+
   return (
     <RootLayout>
       <Routes>
         <Route path="/" element={ <Home /> } />
-        <Route path="/auth/*" element={ <Auth /> } />
+        <Route path="/auth/*" element={ <AuthRoute /> } />
+        <Route path="/account/*" element={ <AccountRoute /> } />
         <Route path="/board/:category" element={<></>} />
         <Route path="/board/:category/register" element={<></>} />
         <Route path="/board/:category/edit" element={<></>} />
