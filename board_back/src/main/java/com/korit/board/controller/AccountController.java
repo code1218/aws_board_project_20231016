@@ -1,20 +1,27 @@
 package com.korit.board.controller;
 
+import com.korit.board.aop.annotation.ArgsAop;
+import com.korit.board.aop.annotation.ValidAop;
 import com.korit.board.dto.PrincipalRespDto;
+import com.korit.board.dto.UpdatePasswordReqDto;
+import com.korit.board.dto.UpdateProfileImgReqDto;
 import com.korit.board.entity.User;
 import com.korit.board.security.PrincipalUser;
+import com.korit.board.service.AccountService;
 import com.korit.board.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
 
+    private final AccountService accountService;
     private final MailService mailService;
 
     @GetMapping("/account/principal")
@@ -32,9 +39,16 @@ public class AccountController {
         return ResponseEntity.ok(mailService.sendAuthMail());
     }
 
-    @PostMapping("/account/profile/img")
-    public ResponseEntity<?> uploadProfileImg() {
-        return ResponseEntity.ok(null);
+    @PutMapping("/account/profile/img")
+    public ResponseEntity<?> updateProfileImg(@RequestBody UpdateProfileImgReqDto updateProfileImgReqDto) {
+        return ResponseEntity.ok(accountService.updateProfileImg(updateProfileImgReqDto));
+    }
+
+    @ArgsAop
+    @ValidAop
+    @PutMapping("/account/password")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordReqDto updatePasswordReqDto, BindingResult bindingResult) {
+        return ResponseEntity.ok(accountService.updatePassword(updatePasswordReqDto));
     }
 }
 

@@ -11,4 +11,6 @@ public interface UserMapper {
     public int checkDuplicate(User user);
     public User findUserByEmail(String email);
     public int updateEnabledToEmail(String email);
+    public int updateProfileUrl(User user);
+    public int updatePassword(User user);
 }
