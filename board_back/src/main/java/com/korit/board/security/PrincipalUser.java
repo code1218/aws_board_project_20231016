@@ -4,11 +4,11 @@ import com.korit.board.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 
-@Getter
 public class PrincipalUser implements UserDetails {
+
+    @Getter
     private User user;
 
     public PrincipalUser(User user) {
@@ -49,4 +49,5 @@ public class PrincipalUser implements UserDetails {
     public boolean isEnabled() {
         return user.getEnabled() > 0;
     }
+
 }

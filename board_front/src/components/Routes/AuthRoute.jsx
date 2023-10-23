@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Signin from '../../pages/Signin/Signin';
 import Signup from '../../pages/Signup/Signup';
 import { useQueryClient } from 'react-query';
+import SignupOauth2 from '../../pages/Signup/SignupOauth2';
 
 function AuthRoute(props) {
 
@@ -17,6 +18,7 @@ function AuthRoute(props) {
         <Routes>
             <Route path="signin" element={ <Signin /> } />
             <Route path="signup" element={ <Signup /> } />
+            <Route path="oauth2/signup" element={ <SignupOauth2 /> } />
         </Routes>
     );
 }
