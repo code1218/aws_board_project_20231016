@@ -3,6 +3,7 @@ package com.korit.board.config;
 import com.korit.board.filter.JwtAuthenticationFilter;
 import com.korit.board.security.PrincipalEntryPoint;
 import com.korit.board.security.PrincipalProvider;
+import com.korit.board.service.PrincipalUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PrincipalEntryPoint principalEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final PrincipalUserDetailsService principalUserDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -38,6 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
-                .authenticationEntryPoint(principalEntryPoint);
+                .authenticationEntryPoint(principalEntryPoint)
+                .and()
+                .oauth2Login()
+                .loginPage("http://localhost:3000/auth/signin")
+                .userInfoEndpoint()
+                .userService(principalUserDetailsService);
     }
 }

@@ -1,4 +1,35 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            clientId: 9a2f64768a98562566f02bebe6e45199
+            #clientSecret: 68bb65efc54c10ce721b396242fa2164
+            redirectUri: http://localhost:8080/login/oauth2/code/kakao
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: POST
+            clientName: Kakao #첫글자 대문자
+          naver:
+            clientId: f9qq2qzsAzZzGaL0GWQU
+            clientSecret: SAUJDtEt77
+            redirectUri: http://localhost:8080/login/oauth2/code/naver
+            authorizationGrantType: authorization_code
+            clientAuthenticationMethod: POST
+            clientName: Naver #첫글자 대문자
+        provider:
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize #인가
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            userNameAttribute: id
+          naver:
+            authorizationUri: https://nid.naver.com/oauth2.0/authorize #인가
+            tokenUri: https://nid.naver.com/oauth2.0/token
+            userInfoUri: https://openapi.naver.com/v1/nid/me
+            userNameAttribute: response
+
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://db1.cp4tulasrlul.ap-northeast-2.rds.amazonaws.com:3306/board
