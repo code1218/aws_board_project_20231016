@@ -1,8 +1,11 @@
 package com.korit.board.security.oauth2;
 
 import com.korit.board.entity.User;
+import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
+import com.korit.board.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -19,6 +22,7 @@ import java.net.URLEncoder;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final UserMapper userMapper;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,5 +41,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     "&profileImg=" + profileImg +
                     "&provider=" + provider);
         }
+
+        PrincipalUser principalUser = new PrincipalUser(user);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
+
+        String accessToken = jwtProvider.generateToken(authenticationToken);
+        response.sendRedirect("http://localhost:3000/auth/oauth2/login" +
+                "?token=" + URLEncoder.encode(accessToken, "UTF-8"));
+
     }
 }
