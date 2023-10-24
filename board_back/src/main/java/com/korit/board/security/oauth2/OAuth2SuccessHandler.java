@@ -2,7 +2,6 @@ package com.korit.board.security.oauth2;
 
 import com.korit.board.entity.User;
 import com.korit.board.repository.UserMapper;
-import com.korit.board.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -30,11 +29,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
             String name = defaultOAuth2User.getAttributes().get("name").toString();
             String profileImg = defaultOAuth2User.getAttributes().get("profile_image").toString();
+            String provider = defaultOAuth2User.getAttributes().get("provider").toString();
             //회원가입이 안되었을 때 OAuth2 계정 회원가입 페이지로 이동
             response.sendRedirect("http://localhost:3000/auth/oauth2/signup" +
                     "?oauth2Id=" + oauth2Id +
                     "&name=" + URLEncoder.encode(name, "UTF-8") +
-                    "&profileImg=" + profileImg);
+                    "&profileImg=" + profileImg +
+                    "&provider=" + provider);
         }
     }
 }
