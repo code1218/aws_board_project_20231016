@@ -9,6 +9,15 @@
         <result property="boardCategoryName" column="board_category_name" />
         <result property="boardCount" column="board_count" />
     </resultMap>
+    <resultMap id="boardMap" type="com.korit.board.entity.Board">
+        <id property="boardId" column="board_id" />
+        <result property="boardTitle" column="board_title" />
+        <result property="boardContent" column="board_content" />
+        <result property="email" column="email" />
+        <result property="createDate" column="create_date" />
+        <result property="boardHitsCount" column="board_hits_count" />
+        <result property="boardLikeCount" column="board_like_count" />
+    </resultMap>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         SELECT
@@ -21,6 +30,34 @@
         group by
             bct.board_category_id,
             bct.board_category_name
+    </select>
+    <select id="getBoardList"
+            resultType="com.korit.board.entity.Board"
+            parameterType="hashmap">
+        select
+            bt.board_id,
+            bt.board_title,
+            bt.email,
+            bt.create_date,
+            bhc.board_hits_count,
+            blc.board_like_count
+        from
+            board_tb bt
+            left outer join (select
+                                board_id,
+                                count(*) as board_hits_count
+                            from
+                                board_hits_tb
+                            group by
+                                board_id) bhc on(bhc.board_id = bt.board_id)
+            left outer join (select
+                                board_id,
+                                count(*) as board_like_count
+                            from
+                                board_like_tb
+                            group by
+                                board_id) blc on(blc.board_id = bt.board_id)
+        limit #{index}, 10
     </select>
 
     <insert

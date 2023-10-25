@@ -1,6 +1,7 @@
 package com.korit.board.service;
 
 import com.korit.board.dto.BoardCategoryRespDto;
+import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.entity.Board;
 import com.korit.board.entity.BoardCategory;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +44,16 @@ public class BoardService {
 
         Board board = writeBoardReqDto.toBoardEntity(email);
         return boardMapper.saveBoard(board) > 0;
+    }
+
+    public List<Object> getBoardList(String categoryName, int page, SearchBoardListReqDto searchBoardListReqDto) {
+        int index = (page - 1) * 10;
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("index", index);
+        paramsMap.put("categoryName", categoryName);
+        paramsMap.put("optionName", searchBoardListReqDto.getOptionName());
+        paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
+        System.out.println(boardMapper.getBoardList(paramsMap));
+        return null;
     }
 }

@@ -18,4 +18,6 @@ public class Board {
     private String boardContent;
     private String email;
     private LocalDateTime createDate;
+    private int boardHitsCount;
+    private int boardLikeCount;
 }

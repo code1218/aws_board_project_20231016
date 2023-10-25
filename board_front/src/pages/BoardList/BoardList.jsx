@@ -74,7 +74,7 @@ function BoardList(props) {
 
     const [ boardList, setBoardList ] = useState([]);
 
-    const getBoardList = useQuery(["getBoardList", page], async () => {
+    const getBoardList = useQuery(["getBoardList", page, category], async () => {
         const option = {
             params: {
                 optionName: "",
