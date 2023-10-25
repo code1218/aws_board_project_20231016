@@ -1,5 +1,6 @@
 package com.korit.board.dto;
 
+import com.korit.board.entity.Board;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -15,4 +16,13 @@ public class WriteBoardReqDto {
     private int categoryId;
     @NotBlank
     private String categoryName;
+
+    public Board toBoardEntity(String email) {
+        return Board.builder()
+                .boardTitle(title)
+                .boardCategoryId(categoryId)
+                .boardContent(content)
+                .email(email)
+                .build();
+    }
 }

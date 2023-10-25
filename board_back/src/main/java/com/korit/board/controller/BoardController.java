@@ -33,7 +33,6 @@ public class BoardController {
     @ValidAop
     @PostMapping("/board/content")
     public ResponseEntity<?> writeBoard(@Valid @RequestBody WriteBoardReqDto writeBoardReqDto, BindingResult bindingResult) {
-
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(boardService.writeBoardContent(writeBoardReqDto));
     }
 }

@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill';
 import Select from 'react-select';
 import { instance } from "../../api/config/instance";
 import { css } from '@emotion/react';
+import { useQueryClient } from 'react-query';
 /** @jsxImportSource @emotion/react */
 
 const buttonContainer = css`
@@ -42,6 +43,25 @@ function BoardWrite(props) {
     const [ newCategory, setNewCategory ] = useState("");
     const [ selectOptions, setSelectOptions ] = useState([]);
     const [ selectedOption, setSelectedOption ] = useState(selectOptions[0]);
+
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        const principal = queryClient.getQueryState("getPrincipal");
+        console.log(principal);
+
+        if(!principal.data) {
+            alert("로그인 후 게시글을 작성하세요.");
+            window.location.replace("/");
+            return;
+        }
+
+        if(!principal?.data?.data.enabled) {
+            alert("이메일 인증 후 게시글을 작성하세요.");
+            window.location.replace("/account/mypage");
+            return;
+        }
+    }, [])
 
     useEffect(() => {
         instance.get("/board/categories")
