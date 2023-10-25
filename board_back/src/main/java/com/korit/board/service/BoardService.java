@@ -1,6 +1,7 @@
 package com.korit.board.service;
 
 import com.korit.board.dto.BoardCategoryRespDto;
+import com.korit.board.dto.BoardListRespDto;
 import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.entity.Board;
@@ -46,14 +47,19 @@ public class BoardService {
         return boardMapper.saveBoard(board) > 0;
     }
 
-    public List<Object> getBoardList(String categoryName, int page, SearchBoardListReqDto searchBoardListReqDto) {
+    public List<BoardListRespDto> getBoardList(String categoryName, int page, SearchBoardListReqDto searchBoardListReqDto) {
         int index = (page - 1) * 10;
         Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put("index", index);
         paramsMap.put("categoryName", categoryName);
         paramsMap.put("optionName", searchBoardListReqDto.getOptionName());
         paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
-        System.out.println(boardMapper.getBoardList(paramsMap));
-        return null;
+
+        List<BoardListRespDto> boardListRespDtos = new ArrayList<>();
+        boardMapper.getBoardList(paramsMap).forEach(board -> {
+            boardListRespDtos.add(board.toBoardListDto());
+        });
+
+        return boardListRespDtos;
     }
 }
