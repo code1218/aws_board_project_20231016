@@ -32,6 +32,13 @@ const titleInput = css`
 
 function BoardWrite(props) {
 
+    const [ boardContent, setBoardContent ] = useState({
+        title: "",
+        content: "",
+        categoryId: 0,
+        categoryName: ""
+    });
+    const [ categories, setCategories ] = useState([]);
     const [ newCategory, setNewCategory ] = useState("");
     const [ selectOptions, setSelectOptions ] = useState([]);
     const [ selectedOption, setSelectedOption ] = useState(selectOptions[0]);
@@ -39,10 +46,11 @@ function BoardWrite(props) {
     useEffect(() => {
         instance.get("/board/categories")
         .then((response) => {
+            setCategories(response.data);
             setSelectOptions(
                 response.data.map(
                     category => {
-                        return { value: category.boardCategoryName, label: category.boardCategoryName }
+                        return { value: category.boardCategoryId, label: category.boardCategoryName }
                     }
                 )
             )
@@ -51,10 +59,10 @@ function BoardWrite(props) {
 
     useEffect(() => {
         if(!!newCategory) {
-            const newOption = { value: newCategory, label: newCategory };
+            const newOption = { value: 0, label: newCategory };
 
             setSelectedOption(newOption);
-            if(!selectOptions.map(option => option.value).includes(newOption.value)) {
+            if(!selectOptions.map(option => option.label).includes(newOption.label)) {
                 setSelectOptions([
                     ...selectOptions,
                     newOption
@@ -62,6 +70,14 @@ function BoardWrite(props) {
             }
         }
     }, [newCategory])
+
+    useEffect(() => {
+        setBoardContent({
+            ...boardContent,
+            categoryId: selectedOption?.value,
+            categoryName: selectedOption?.label
+        });
+    }, [selectedOption]);
 
     const modules = {
         toolbar: {
@@ -73,12 +89,18 @@ function BoardWrite(props) {
         }
     }
 
-    const handleTitleInput = () => {
-
+    const handleTitleInput = (e) => {
+        setBoardContent({
+            ...boardContent,
+            title: e.target.value
+        });
     }
 
     const handleContentInput = (value) => {
-
+        setBoardContent({
+            ...boardContent,
+            content: value
+        });
     }
 
     const handleSelectChange = (option) => {
@@ -91,6 +113,20 @@ function BoardWrite(props) {
             return;
         }
         setNewCategory(categoryName);
+    }
+
+    const handleWriteSubmit = async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            console.log(boardContent);
+            await instance.post("/board/content", boardContent, option);
+        } catch(error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -116,7 +152,7 @@ function BoardWrite(props) {
                         onChange={handleContentInput} />
                 </div>
                 <div css={buttonContainer}>
-                    <button>작성하기</button>
+                    <button onClick={handleWriteSubmit}>작성하기</button>
                 </div>
             </div>
         </RootContainer>

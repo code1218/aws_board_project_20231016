@@ -1,7 +1,9 @@
 package com.korit.board.controller;
 
+import com.korit.board.aop.annotation.ArgsAop;
 import com.korit.board.aop.annotation.ValidAop;
 import com.korit.board.dto.RegisterBoardReqDto;
+import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.exception.ValidException;
 import com.korit.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +27,13 @@ public class BoardController {
     @GetMapping("/board/categories")
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok(boardService.getBoardCategoriesAll());
+    }
+
+    @ArgsAop
+    @ValidAop
+    @PostMapping("/board/content")
+    public ResponseEntity<?> writeBoard(@Valid @RequestBody WriteBoardReqDto writeBoardReqDto, BindingResult bindingResult) {
+
+        return ResponseEntity.ok(null);
     }
 }
