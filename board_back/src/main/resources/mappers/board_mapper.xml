@@ -79,6 +79,12 @@
                 <when test="optionName.equals('작성자')">
                     and ut.nickname like concat("%", #{searchValue}, "%")
                 </when>
+                <otherwise>
+                    and (
+                        bt.board_title like concat("%", #{searchValue}, "%")
+                        or ut.nickname like concat("%", #{searchValue}, "%")
+                    )
+                </otherwise>
             </choose>
         order by
             board_id desc
