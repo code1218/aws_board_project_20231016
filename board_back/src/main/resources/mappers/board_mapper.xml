@@ -21,6 +21,7 @@
         <result property="boardLikeCount" column="board_like_count" />
     </resultMap>
 
+
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         SELECT
             bct.board_category_id,
@@ -182,4 +183,20 @@
         insert into board_tb
         values(0, #{boardTitle}, #{boardCategoryId}, #{boardContent}, #{email}, now())
     </insert>
+
+    <insert id="insertLike"
+            parameterType="hashmap">
+        insert into board_like_tb
+        values(0, #{boardId}, #{email})
+    </insert>
+
+    <delete id="deleteLike"
+            parameterType="hashmap">
+        delete
+        from
+            board_like_tb
+        where
+            board_id = #{boardId}
+            and email = #{email}
+    </delete>
 </mapper>

@@ -193,8 +193,8 @@ function BoardList(props) {
                                         <td css={SBoardTitle}>{board.title}</td>
                                         <td>{board.nickname}</td>
                                         <td>{board.createDate}</td>
-                                        <td>{board.hitsCount}</td>
                                         <td>{board.likeCount}</td>
+                                        <td>{board.hitsCount}</td>
                                     </tr>
                         })}
                     </tbody>
