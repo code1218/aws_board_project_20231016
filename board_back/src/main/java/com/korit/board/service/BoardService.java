@@ -1,9 +1,7 @@
 package com.korit.board.service;
 
-import com.korit.board.dto.BoardCategoryRespDto;
-import com.korit.board.dto.BoardListRespDto;
-import com.korit.board.dto.SearchBoardListReqDto;
-import com.korit.board.dto.WriteBoardReqDto;
+import com.korit.board.aop.annotation.ArgsAop;
+import com.korit.board.dto.*;
 import com.korit.board.entity.Board;
 import com.korit.board.entity.BoardCategory;
 import com.korit.board.repository.BoardMapper;
@@ -70,5 +68,18 @@ public class BoardService {
         paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
 
         return boardMapper.getBoardCount(paramsMap);
+    }
+
+    public GetBoardRespDto getBoard(int boardId) {
+        return boardMapper.getBoardByBoardId(boardId).toBoardDto();
+    }
+
+    @ArgsAop
+    public boolean getLikeState(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+        System.out.println(paramsMap);
+        return boardMapper.getLikeState(paramsMap) > 0;
     }
 }

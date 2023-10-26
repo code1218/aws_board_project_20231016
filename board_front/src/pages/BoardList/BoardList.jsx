@@ -58,6 +58,14 @@ const SPageNumbers = css`
 
 `;
 
+const SBoardTitle = css`
+    max-width: 500px;
+    width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
 function BoardList(props) {
     const navigate = useNavigate();
     const { category, page } = useParams();
@@ -68,10 +76,8 @@ function BoardList(props) {
         {value: "작성자", label: "작성자"}
     ];
 
-    const [ selectedOption, setSelectedOption ] = useState(options[0]);
-
     const search = {
-        optionName: selectedOption.label,
+        optionName: options[0].label,
         searchValue: ""
     }
 
@@ -82,6 +88,8 @@ function BoardList(props) {
             params: searchParams
         }
         return await instance.get(`/boards/${category}/${page}`, option);
+    }, {
+        refetchOnWindowFocus: false
     });
 
     const getBoardCount = useQuery(["getBoardCount", page, category], async () => {
@@ -89,6 +97,8 @@ function BoardList(props) {
             params: searchParams
         }
         return await instance.get(`/boards/${category}/count`, option);
+    }, {
+        refetchOnWindowFocus: false
     });
 
     const handleSearchInputChange = (e) => {
@@ -108,9 +118,8 @@ function BoardList(props) {
     const handleSearchButtonClick = () => {
         navigate(`/board/${category}/1`);
         getBoardList.refetch();
+        getBoardCount.refetch();
     }
-
-    console.log(!getBoardCount.isLoading && getBoardCount.data.data);
 
     const pagination = () => {
         if(getBoardCount.isLoading) {
@@ -178,9 +187,10 @@ function BoardList(props) {
                     </thead>
                     <tbody>
                         {!getBoardList.isLoading && getBoardList?.data?.data.map(board => {
-                            return <tr key={board.boardId}>
+                            return <tr key={board.boardId} 
+                                    onClick={() => {navigate(`/board/${board.boardId}`)}}>
                                         <td>{board.boardId}</td>
-                                        <td>{board.title}</td>
+                                        <td css={SBoardTitle}>{board.title}</td>
                                         <td>{board.nickname}</td>
                                         <td>{board.createDate}</td>
                                         <td>{board.hitsCount}</td>
