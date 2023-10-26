@@ -62,4 +62,13 @@ public class BoardService {
 
         return boardListRespDtos;
     }
+
+    public int getBoardCount(String categoryName, SearchBoardListReqDto searchBoardListReqDto) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("categoryName", categoryName);
+        paramsMap.put("optionName", searchBoardListReqDto.getOptionName());
+        paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
+
+        return boardMapper.getBoardCount(paramsMap);
+    }
 }
