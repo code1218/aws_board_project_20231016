@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Issue Branch
-        uses: code1218/aws_board_project_20231016@main
+        uses: robvanderleek/create-issue-branch@1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Echo branch name
