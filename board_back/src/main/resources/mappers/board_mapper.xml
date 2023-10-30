@@ -21,6 +21,24 @@
         <result property="boardLikeCount" column="board_like_count" />
     </resultMap>
 
+    <update id="updateBoard">
+        update board_tb
+        set
+            board_title = #{boardTitle},
+            board_content = #{boardContent},
+            board_category_id = #{boardCategoryId}
+        where
+            board_id = #{boardId}
+        and (email = #{email}
+            or 1 = (select
+                        count(*)
+                    from
+                        authority_tb at
+                        left outer join user_tb ut on(ut.user_id = at.user_id)
+                    where
+                        at.role_id = 3
+                    and ut.email = #{email}))
+    </update>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         SELECT
@@ -198,5 +216,12 @@
         where
             board_id = #{boardId}
             and email = #{email}
+    </delete>
+    <delete id="deleteBoard">
+        delete
+        from
+            board_tb
+        where
+            board_id = #{boardId}
     </delete>
 </mapper>

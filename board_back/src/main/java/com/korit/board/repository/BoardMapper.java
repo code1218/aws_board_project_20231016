@@ -18,4 +18,6 @@ public interface BoardMapper {
     public int getLikeState(Map<String, Object> paramsMap);
     public int insertLike(Map<String, Object> paramsMap);
     public int deleteLike(Map<String, Object> paramsMap);
+    public int deleteBoard(int boardId);
+    public int updateBoard(Board board);
 }

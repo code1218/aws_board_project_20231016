@@ -2,6 +2,7 @@ package com.korit.board.controller;
 
 import com.korit.board.aop.annotation.ArgsAop;
 import com.korit.board.aop.annotation.ValidAop;
+import com.korit.board.dto.EditBoardReqDto;
 import com.korit.board.dto.RegisterBoardReqDto;
 import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
@@ -70,5 +71,20 @@ public class BoardController {
     @DeleteMapping("/board/like/{boardId}")
     public ResponseEntity<?> cancelLike(@PathVariable int boardId) {
         return ResponseEntity.ok(boardService.cancelLike(boardId));
+    }
+
+    @DeleteMapping("/board/{boardId}")
+    public ResponseEntity<?> deleteBoard(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardId));
+    }
+
+    @ArgsAop
+    @ValidAop
+    @PutMapping("/board/{boardId}")
+    public ResponseEntity<?> editBoard(@PathVariable int boardId,
+                                       @Valid @RequestBody EditBoardReqDto editBoardReqDto,
+                                       BindingResult bindingResult) {
+
+        return ResponseEntity.ok(null);
     }
 }
