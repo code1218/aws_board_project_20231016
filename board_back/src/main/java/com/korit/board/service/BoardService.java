@@ -102,4 +102,12 @@ public class BoardService {
     public boolean deleteBoard(int boardId) {
         return boardMapper.deleteBoard(boardId) > 0;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean editBoard(int boardId, EditBoardReqDto editBoardReqDto) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Board board = editBoardReqDto.toBoardEntity(email);
+        board.setBoardId(boardId);
+        return boardMapper.updateBoard(board) > 0;
+    }
 }

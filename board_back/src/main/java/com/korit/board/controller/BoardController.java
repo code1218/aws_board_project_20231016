@@ -85,6 +85,6 @@ public class BoardController {
                                        @Valid @RequestBody EditBoardReqDto editBoardReqDto,
                                        BindingResult bindingResult) {
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(boardService.editBoard(boardId, editBoardReqDto));
     }
 }

@@ -29,15 +29,15 @@
             board_category_id = #{boardCategoryId}
         where
             board_id = #{boardId}
-        and (email = #{email}
-            or 1 = (select
-                        count(*)
-                    from
-                        authority_tb at
-                        left outer join user_tb ut on(ut.user_id = at.user_id)
-                    where
-                        at.role_id = 3
-                    and ut.email = #{email}))
+<!--        and (email = #{email}-->
+<!--            or 1 = (select-->
+<!--                        count(*)-->
+<!--                    from-->
+<!--                        authority_tb at-->
+<!--                        left outer join user_tb ut on(ut.user_id = at.user_id)-->
+<!--                    where-->
+<!--                        at.role_id = 3-->
+<!--                    and ut.email = #{email}))-->
     </update>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
